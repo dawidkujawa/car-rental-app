@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/js/mdb.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/css/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <title>Home</title>
+<body>
+
+<!-- add navbar -->
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e2fde4;">
+    <a class="navbar-brand" href="#"><img th:src="@{/images/brand.png}" th:width="100" class="img-fluid" alt="Responsive image"/></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link active" th:href="@{/home/home}">home<span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" th:href="@{/home/cars}">cars</a>
+            <a class="nav-item nav-link" th:href="@{/home/departments}">departments</a>
+            <a class="nav-item nav-link" th:href="@{/home/aboutus}">about us</a>
+            <a class="nav-item nav-link" th:href="@{/home/account}">my account</a>
+            <span th:if="${user.isAdmin == true}">
+                <a class="nav-item nav-link" th:href="@{/admin}">admin page</a>
+            </span>
+            <a class="nav-item nav-link" th:href="@{/logout}">sign out</a>
+        </div>
+    </div>
+</nav>
+
+<br><br>
+
+<h1 class="display-4 text-center">Hello <span th:utext="${user.firstname}"></span></h1>
+<p class="lead text-center text-muted">check our offer!</p>
+
+
+</body>
+</html>

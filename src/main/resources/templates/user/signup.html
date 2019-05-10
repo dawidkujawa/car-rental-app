@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/js/mdb.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/css/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <title>Sign up</title>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e2fde4;">
+    <a class="navbar-brand" href="#"><img th:src="@{/images/brand.png}" th:width="100" class="img-fluid" alt="Responsive image"/></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link disabled" th:href="@{/home/home}"
+               th:onclick="'alert(\'If you want to view our offer, you have to login or sign up first\');'">home</a>
+            <a class="nav-item nav-link disabled" th:href="@{/home/cars}"
+               th:onclick="'alert(\'If you want to view our offer, you have to login or sign up first\');'">cars</a>
+            <a class="nav-item nav-link disabled" th:href="@{/home/departments}"
+               th:onclick="'alert(\'If you want to view our offer, you have to login or sign up first\');'">departments</a>
+            <a class="nav-item nav-link disabled" th:href="@{/home/aboutus}"
+               th:onclick="'alert(\'If you want to view our offer, you have to login or sign up first\');'">about us</a>
+            <a class="nav-item nav-link disabled" th:href="@{/admin}"
+               th:onclick="'alert(\'If you want to view our offer, you have to login or sign up first\');'">admin
+                page</a>
+            <a class="nav-item nav-link active" th:href="@{/login}">login/sign up <span class="sr-only">(current)</span></a>
+        </div>
+    </div>
+</nav>
+
+<br><br>
+
+<div class="container">
+    <form class="form-horizontal" role="form" method="POST" th:action="@{/signup}" th:object="${user}">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="text-center">
+                    <div class="alert alert-success" role="alert" th:if="${msg}" th:utext="${msg}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <h2>Register New User</h2>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 field-label-responsive">
+                <label for="firstname">First Name</label>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-user"></i></div>
+                        <input type="text" th:field="*{firstname}" class="form-control" id="firstname" name="firstname"
+                               placeholder="First Name" required autofocus>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 field-label-responsive">
+                <label for="lastname">Last Name</label>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-user"></i></div>
+                        <input type="text" th:field="*{lastname}" class="form-control" id="lastname" name="lastname"
+                               placeholder="Last name" required autofocus>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 field-label-responsive">
+                <label for="email">Email</label>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-at"></i></div>
+                        <input type="text" th:field="*{email}" class="form-control" id="email"
+                               placeholder="username@jackrutorial.com" required autofocus>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-control-feedback">
+                         <span class="text-danger align-middle" th:if="${#fields.hasErrors('email')}"
+                               th:errors="*{email}">
+                         </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 field-label-responsive">
+                <label for="password">Password</label>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group has-danger">
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-key"></i></div>
+                        <input type="password" th:field="*{password}" class="form-control" id="password"
+                               placeholder="Password" required>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-control-feedback">
+                         <span class="text-danger align-middle" th:if="${#fields.hasErrors('password')}"
+                               th:errors="*{password}">
+                         </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-success"><i class="fa fa-user-plus"></i> Register</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

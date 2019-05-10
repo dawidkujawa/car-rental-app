@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/js/mdb.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/css/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <title>My account</title>
+</head>
+
+<body>
+
+<!-- add navbar -->
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e2fde4;">
+    <a class="navbar-brand" href="#"><img th:src="@{/images/brand.png}" th:width="100" class="img-fluid"
+                                          alt="Responsive image"/></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" th:href="@{/home/home}">home</a>
+            <a class="nav-item nav-link" th:href="@{/home/cars}">cars<span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" th:href="@{/home/departments}">departments</a>
+            <a class="nav-item nav-link" th:href="@{/home/aboutus}">about us</a>
+            <a class="nav-item nav-link active" th:href="@{/home/account}">my account<span
+                    class="sr-only">(current)</span></a>
+            <span th:if="${user.isAdmin == true}">
+                <a class="nav-item nav-link" th:href="@{/admin}">admin page</a>
+            </span>
+            <a class="nav-item nav-link" th:href="@{/logout}">sign out</a>
+        </div>
+    </div>
+</nav>
+
+<br><br>
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="text-center">
+            <div class="alert alert-success" role="alert" th:if="${msg}" th:utext="${msg}">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="text-center">
+            <div class="alert alert-danger" role="alert" th:if="${msg1}" th:utext="${msg1}">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h1 class="display-4 text-center">Hello <span th:utext="${user.firstname}"></span></h1>
+    <p class="lead text-center text-muted">this is you account panel</p>
+    <br><br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-9">
+                <br>
+                <h2>User information</h2>
+                <hr>
+            </div>
+        </div>
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>First Name</th>
+                <td th:text="${user.firstname}"/>
+            </tr>
+            <tr>
+                <th>Last Name</th>
+                <td th:text="${user.lastname}"/>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td th:text="${user.email}"/>
+            </tr>
+            </tbody>
+        </table>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-9">
+                    <br>
+                    <h2>Your bookings</h2>
+                    <hr>
+                </div>
+            </div>
+            <table class="table table-bordered table-responsive-sm" style="background-color: #e2fde4;">
+                <thead class="thead-dark">
+
+                <tr>
+                    <th>Booked car</th>
+                    <th>Rent date</th>
+                    <th>Return date</th>
+                    <th>Rent location</th>
+                    <th>Return location</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+
+                <tr th:each="tempReservation : ${reservations}">
+
+                    <td>
+                        <div th:text="${tempReservation.car.brand}"/>
+                        <div th:text="${tempReservation.car.model}"/>
+                    </td>
+
+                    <td th:text="${#dates.format(tempReservation.rentDate, 'dd-MM-yyyy')}"/>
+                    <td th:text="${#dates.format(tempReservation.returnDate, 'dd-MM-yyyy')}"/>
+
+                    <td th:text="${tempReservation.rentLocationCity}"/>
+                    <td th:text="${tempReservation.returnLocationCity}"/>
+
+                    <td th:text="${tempReservation.price} + ' €'"/>
+
+                    <td class="text-center">
+                        <form th:action="@{/home/account/cancelBooking(reservationId=${tempReservation.id})}"
+                              method="POST">
+                            <input type="hidden" name="cancel" th:value="${tempReservation.id}"/>
+                            <input type="submit" value="Cancel booking" class="btn btn-danger btn-md"
+                                   th:if="${tempReservation.status == 'upcoming'}"
+                                   onclick="if(!(confirm('Are you sure you want to cancel your booking?'))) return false">
+                            <div th:if="${tempReservation.status == 'ongoing' || tempReservation.status == 'past'}">
+                            <button type="submit" class="btn btn-danger btn-md" disabled>
+                                    Cancel booking
+                            </button>
+                                <br>
+                                <hr>
+                                <span th:utext="'Status: ' + ${tempReservation.status}"></span>
+                            </div>
+                        </form>
+                        </a>
+                    </td>
+            </table>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-9 text-right">
+                        <br>
+                        <hr>
+                        <h2 th:text="'Sum payable: ' + ${totalPrice} + ' €'"/>
+                        <p class="lead text-muted">Paid on receipt</p>
+                        <br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/js/mdb.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/css/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <title>Book car form</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e2fde4;">
+    <a class="navbar-brand" href="#"><img th:src="@{/images/brand.png}" th:width="100" class="img-fluid"
+                                          alt="Responsive image"/></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" th:href="@{/home/home}">home</a>
+            <a class="nav-item nav-link active" th:href="@{/home/cars}">cars<span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" th:href="@{/home/departments}">departments</a>
+            <a class="nav-item nav-link" th:href="@{/home/aboutus}">about us</a>
+            <a class="nav-item nav-link" th:href="@{/home/account}">my account</a>
+            <span th:if="${user.isAdmin == true}">
+                <a class="nav-item nav-link" th:href="@{/admin}">admin page</a>
+            </span>
+            <a class="nav-item nav-link" th:href="@{/logout}">sign out</a>
+        </div>
+    </div>
+</nav>
+
+<br><br>
+
+<div class="container">
+
+    <div class=container>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-9">
+                <br>
+                <h2>Book car</h2>
+                <hr>
+                <medium class="lead text-center text-muted">fill out the form below to book the car</medium>
+                <br><br>
+            </div>
+        </div>
+        <div class="container-fluid" style="border: 1px solid #cecece;" align="center">
+            <br>
+            <div class="row">
+                <div class="col-lg">
+                    <img th:src="${car.imageUrl}" th:width="800" class="img-fluid" alt="Responsive image"/>
+                    <div>
+                        <h1 class="display-4 text-center">
+                            <span th:utext="${car.brand}"/>
+                            <span th:utext="${car.model}"/>
+                        </h1>
+                        <br>
+                        <div align="left">
+                            <h4>Location:
+                                <small th:utext="${car.location.city}"/>
+                            </h4>
+                            <h4>Description:
+                                <small th:utext="${car.description}"/>
+                            </h4>
+                            <h4>Price for a day:
+                                <small th:utext="${car.priceForADay} + ' €'"/>
+                            </h4>
+                            <h4>Upcoming reservations:
+                                <div class="col-md-6">
+                                    <small th:each="thisReservation : ${car.upcomingReservations}">
+                                        <br>
+                                        <span>[Rent date: </span>
+                                        <span th:utext="${#dates.format(thisReservation.rentDate, 'dd-MM-yyyy')}"/>
+                                        <br>
+                                        <span>Return date: </span>
+                                        <span th:utext="${#dates.format(thisReservation.returnDate, 'dd-MM-yyyy')}"/>
+                                        <br>
+                                        <span>Rent location:</span>
+                                        <span th:utext="${thisReservation.rentLocationCity}"/>
+                                        <br>
+                                        <span>Return location: </span>
+                                        <span th:utext="${thisReservation.returnLocationCity}+']'"/>
+                                        <br>
+                                    </small>
+                                </div>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div container>
+        <form class="form-horizontal" role="form" th:action="@{/home/cars/bookCar}" method="POST"
+              enctype="multipart/form-data"
+              th:object="${reservation}">
+            <input type="hidden" th:field="${reservation.id}"/>
+
+
+            <input type="hidden" th:field="${reservation.car}" th:value="${car}"/>
+            <br>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-9">
+                    <medium class="lead text-center text-muted">
+                        if the car has upcoming reservations, pay attention to the dates and locations of the car rental —
+                        you can not reserve the car for the time it has already been reserved;
+                        if you rent a car before a fixed date of an upcoming reservation,
+                        you must return it to the location from which it will be picked up as part of the next booking:
+                        <br>
+                        otherwise your reservation will not be accepted!
+                    </medium>
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 field-label-responsive">
+                    <label for="rentDate">Rent date</label>
+                </div>
+                <div class="col-md-6">
+                    <div class=form-group>
+                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                            <div class="input-group-addon" style="width: 2.6rem">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="date" th:field="${reservation.rentDate}" class="form-control" id="rentDate"
+                                   required>
+                            <span th:errors="${reservation.rentDate}" class="error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 field-label-responsive">
+                    <label for="returnDate">Return date</label>
+                </div>
+                <div class="col-md-6">
+                    <div class=form-group>
+                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                            <div class="input-group-addon" style="width: 2.6rem">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="date" th:field="${reservation.returnDate}" class="form-control" id="returnDate"
+                                   required>
+                            <span th:errors="${reservation.returnDate}" class="error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 field-label-responsive">
+                    <label for="returnLocation">Return location</label>
+                </div>
+                <div class="col-md-6">
+                    <div class=form-group>
+                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                            <div class="input-group-addon" style="width: 2.6rem">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <select th:field="${reservation.returnLocation.city}" class="form-control" id="returnLocation" required>
+                                <option value=""> -- select field --</option>
+                                <option th:each="location : ${locations}"
+                                        th:value="${location.city}"
+                                        th:utext="${location.city}"/>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-success btn-md">Book car</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <a th:href="@{/home/cars}">Back to car list</a>
+</div>
+</div>
+<br><br>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/js/mdb.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/css/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <title>Save location</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e2fde4;">
+    <a class="navbar-brand" href="#"><img th:src="@{/images/brand.png}" th:width="100" class="img-fluid"
+                                          alt="Responsive image"/></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" th:href="@{/home/home}">home</a>
+            <a class="nav-item nav-link" th:href="@{/home/cars}">cars</a>
+            <a class="nav-item nav-link" th:href="@{/home/departments}">departments</a>
+            <a class="nav-item nav-link" th:href="@{/home/aboutus}">about us</a>
+            <a class="nav-item nav-link" th:href="@{/home/account}">my account</a>
+            <a class="nav-item nav-link active" th:href="@{/admin}">admin page<span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" th:href="@{/logout}">sign out</a>
+        </div>
+    </div>
+</nav>
+
+<br><br>
+
+
+<div class="container">
+
+    <div class=container>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-9">
+                <br>
+                <h2>Save new location / update location</h2>
+                <hr>
+            </div>
+        </div>
+        <form class="form-horizontal" role="form" th:action="@{/admin/saveLocation}" method="POST"
+              enctype="multipart/form-data"
+              th:object="${location}">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="row">
+                <div class="col-md-3 field-label-responsive">
+                    <label for="city">City</label>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                            <div class="input-group-addon" style="width: 2.6rem">
+                                <i class="fas fa-city"></i>
+                            </div>
+                            <input type="text" th:field="${location.city}" class="form-control" id="city" name="city"
+                                   placeholder="City" required autofocus>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 field-label-responsive">
+                    <label for="address">Address</label>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                            <div class="input-group-addon" style="width: 2.6rem">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <input type="text" th:field="${location.address}" class="form-control" id="address"
+                                   name="address"
+                                   placeholder="Address" required autofocus>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 field-label-responsive">
+                    <label for="phoneNumber">Phone number</label>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                            <div class="input-group-addon" style="width: 2.6rem">
+                                <i class="fas fa-phone-square"></i>
+                            </div>
+                            <input type="number" th:field="${location.phoneNumber}"
+                                   class="form-control" id="phoneNumber" name="phoneNumber"
+                                   placeholder="Phone number" required autofocus>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-success btn-md">Save</button>
+                </div>
+            </div>
+            <!--<input type="text" th:field="${location.city}" class="form-control" id="city">-->
+            <!--<input type="text" th:field="${location.address}" class="form-control" id="model">-->
+            <!--<input type="text" th:field="${location.phoneNumber}" class="form-control" id="description">-->
+        </form>
+    </div>
+    <hr>
+    <a th:href="@{/admin}">Back to admin page</a>
+</div>
+</body>
+</html>
